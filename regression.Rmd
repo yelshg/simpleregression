@@ -1,5 +1,6 @@
 ---
-title: "Regression"
+title: "Simple Linear Regression"
+author: "Yelsh Gebreselassie"
 output:
   pdf_document:
     toc: yes
@@ -42,3 +43,85 @@ ggplot(data = gpa.data, mapping = aes(x = sat_total, y = gpa_fy)) +
 
 The above plot shows the positive correlation between SAT scores and
 freshman GPA. 
+
+## How well do high school GPA correlate with freshman GPA?
+
+```{r}
+cor(gpa_fy, gpa_hs) 
+```
+
+```{r}
+ggplot(data = gpa.data, mapping = aes(y = gpa_fy, x = gpa_hs)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  labs(x = "High school GPA", y = "Freshman GPA")
+```
+
+## Is the correlation between SAT scores and freshman GPA stronger for men or for women?
+
+```{r}
+gpa.data %>% 
+  group_by(sex) %>% 
+  summarize(correlation = cor(sat_total, gpa_fy))
+```
+
+```{r}
+ggplot(data = gpa.data, mapping = aes(y = gpa_fy, x = gpa_hs, color = sex)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  labs(x = "High school GPA", y = "Freshman GPA")
+```
+
+# Models
+
+## Do SAT scores predict freshman GPAs?
+
+- X = SAT scores
+- Y = Freshman GPA
+
+```{r}
+model_simple <- lm(gpa_fy ~ sat_total, data = gpa.data)
+tidy(model_simple, conf.int = TRUE)
+glance(model_simple)
+```
+
+## Does a certain type of SAT score have a larger effect on freshman GPAs?
+
+```{r}
+model_sat <- lm(gpa_fy ~ sat_verbal + sat_math, data = gpa.data)
+tidy(model_sat, conf.int = TRUE)
+glance(model_sat)
+```
+
+## Do high school GPAs predict freshman GPAs?
+
+```{r}
+model_hs <- lm(gpa_fy ~ gpa_hs, data = gpa.data)
+tidy(model_hs, conf.int = TRUE)
+glance(model_hs)
+```
+
+## Explaining College GPA using SAT scores and sex
+
+```{r}
+model_sat_sex <- lm(gpa_fy ~ sat_total + sex, data = gpa.data)
+tidy(model_sat_sex, conf.int = TRUE)
+glance(model_sat_sex)
+```
+
+## Explain college GPA using SAT scores, high school GPA and sex
+
+```{r}
+model_final <- lm(gpa_fy ~ sat_verbal + sat_math + gpa_hs + sex, 
+                  data = gpa.data)
+tidy(model_final, conf.int = TRUE)
+glance(model_final)
+```
+
+## Which model best predicts freshman GPA?
+
+```{r}
+modelsummary(list(model_simple, model_sat, model_hs, 
+                  model_sat_sex, model_final))
+```
+
