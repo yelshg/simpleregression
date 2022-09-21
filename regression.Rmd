@@ -2,9 +2,9 @@
 title: "Simple Linear Regression"
 author: "Yelsh Gebreselassie"
 output:
-  pdf_document:
-    toc: yes
   html_document:
+    toc: yes
+  pdf_document:
     toc: yes
 date: "2022-09-21"
 ---
