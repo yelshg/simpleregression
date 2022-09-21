@@ -1,0 +1,44 @@
+---
+title: "Regression"
+output:
+  pdf_document:
+    toc: yes
+  html_document:
+    toc: yes
+date: "2022-09-21"
+---
+
+In this document, we do basic descriptive and regression analysis to 
+understand what variables best predict freshman GPA. 
+
+
+1. First install/ load the R packages we need
+
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(broom)
+library(modelsummary)
+
+gpa.data <- read_csv("data/satgpa.csv")
+attach(gpa.data)
+```
+
+# Exploratory questions
+
+## How well do SAT scores correlate with freshman GPA?
+
+```{r}
+cor(gpa_fy, sat_total) 
+```
+A correlation of -1 means perfect negative correlation. A correlation of 0 means, no correlation between the two. And a correlation of 1 means perfect positive correlation. The above result shows a positive correlation between SAT scores and freshman GPA.But it is not very strong, meaning close to 1. 
+
+```{r}
+ggplot(data = gpa.data, mapping = aes(x = sat_total, y = gpa_fy)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  labs(y = "Freshman GPA", x = "SAT total")
+```
+
+The above plot shows the positive correlation between SAT scores and
+freshman GPA. 
