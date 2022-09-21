@@ -9,11 +9,14 @@ output:
 date: "2022-09-21"
 ---
 
+
+
+
 In this document, we do basic descriptive and regression analysis to 
 understand what variables best predict freshman GPA. 
 
 
-1. First install/ load the R packages we need
+1. First install/ load the R packages we need. We also load and attach our data. 
 
 
 ```{r message=FALSE, warning=FALSE}
